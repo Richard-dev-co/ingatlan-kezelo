@@ -350,3 +350,182 @@ main {
     text-align: center;
     margin-top: 12px;
 }
+/* DASHBOARD */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-kartya {
+    background: white;
+    border: 1px solid #e8eaed;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: box-shadow 0.15s ease;
+}
+
+.stat-kartya:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.stat-ikon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.stat-ikon.zold { background-color: #ecfdf5; }
+.stat-ikon.piros { background-color: #fef2f2; }
+.stat-ikon.kek { background-color: #eff6ff; }
+.stat-ikon.lila { background-color: #f5f3ff; }
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-szam {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1d23;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.stat-cimke {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.dashboard-panel {
+    background: white;
+    border: 1px solid #e8eaed;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.dashboard-panel h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1d23;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e8eaed;
+}
+
+.foglalas-sor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.foglalas-sor:last-child {
+    border-bottom: none;
+}
+
+.foglalas-sor .cim {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1d23;
+}
+
+.foglalas-sor .reszletek {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+/* NAPTÁR */
+.naptar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.naptar-nap-nev {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: #9ca3af;
+    padding: 4px 0;
+    text-transform: uppercase;
+}
+
+.naptar-nap {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #4b5563;
+    cursor: default;
+    position: relative;
+}
+
+.naptar-nap.mai {
+    background-color: #3b5bdb;
+    color: white;
+    font-weight: 700;
+}
+
+.naptar-nap.foglalt {
+    background-color: #fef2f2;
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.naptar-nap.ures {
+    color: #d1d5db;
+}
+
+.naptar-honap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.naptar-honap span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1d23;
+}
+
+.naptar-honap button {
+    background: none;
+    border: 1px solid #e8eaed;
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.naptar-honap button:hover {
+    background-color: #f3f4f6;
+}
+
+#datum {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+}
