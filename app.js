@@ -4,9 +4,48 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const { createClient } = supabase
 const client = createClient(supabaseUrl, supabaseKey)
 
+// Űrlap megjelenítése/elrejtése
+function urlapMegjelenites() {
+    document.getElementById('urlap').classList.remove('rejtett')
+}
+
+function urlapElrejtes() {
+    document.getElementById('urlap').classList.add('rejtett')
+}
+
+// Új helyiség mentése
+async function mentese() {
+    const nev = document.getElementById('nev').value
+    const tipus = document.getElementById('tipus').value
+    const terulet_m2 = document.getElementById('terulet_m2').value
+    const ferohely = document.getElementById('ferohely').value
+    const leiras = document.getElementById('leiras').value
+    const statusz = document.getElementById('statusz').value
+    const ar_havi = document.getElementById('ar_havi').value
+
+    if (!nev) {
+        alert('A helyiség neve kötelező!')
+        return
+    }
+
+    const { error } = await client
+        .from('helyisegek')
+        .insert([{ nev, tipus, terulet_m2, ferohely, leiras, statusz, ar_havi }])
+
+    if (error) {
+        alert('Hiba történt a mentés során!')
+        console.error(error)
+        return
+    }
+
+    urlapElrejtes()
+    helyisegekBetoltese()
+}
+
+// Helyiségek betöltése
 async function helyisegekBetoltese() {
     const lista = document.getElementById('helyisegek-lista')
-    
+
     const { data, error } = await client
         .from('helyisegek')
         .select('*')

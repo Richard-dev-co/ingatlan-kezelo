@@ -18,10 +18,39 @@
     </header>
 
     <main>
-        <h2>Helyiségek</h2>
+        <main>
+        <div class="oldal-fejlec">
+            <h2>Helyiségek</h2>
+            <button id="uj-gomb" onclick="urlapMegjelenites()">+ Új helyiség</button>
+        </div>
+
+        <div id="urlap" class="rejtett">
+            <h3>Új helyiség hozzáadása</h3>
+            <input type="text" id="nev" placeholder="Helyiség neve *">
+            <select id="tipus">
+                <option value="iroda">Iroda</option>
+                <option value="terem">Terem</option>
+                <option value="raktár">Raktár</option>
+            </select>
+            <input type="number" id="terulet_m2" placeholder="Terület (m²)">
+            <input type="number" id="ferohely" placeholder="Férőhely (fő)">
+            <input type="text" id="leiras" placeholder="Leírás">
+            <select id="statusz">
+                <option value="szabad">Szabad</option>
+                <option value="foglalt">Foglalt</option>
+                <option value="karbantartás">Karbantartás</option>
+            </select>
+            <input type="number" id="ar_havi" placeholder="Havi díj (Ft)">
+            <div class="urlap-gombok">
+                <button onclick="mentese()">Mentés</button>
+                <button onclick="urlapElrejtes()">Mégse</button>
+            </div>
+        </div>
+
         <div id="helyisegek-lista">
             Betöltés...
         </div>
+    </main>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
