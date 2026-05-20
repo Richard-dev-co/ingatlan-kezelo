@@ -69,4 +69,23 @@ h2 {
 .statusz.karbantartas {
     background-color: #f39c12;
     color: white;
+}nav {
+    margin-top: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    margin: 0 5px;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+nav a:hover {
+    background-color: #34495e;
+}
+
+nav a.aktiv {
+    background-color: #3498db;
 }
