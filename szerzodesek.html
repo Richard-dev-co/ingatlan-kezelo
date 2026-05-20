@@ -19,7 +19,34 @@
     </header>
 
     <main>
-        <h2>Szerződések</h2>
+        <div class="oldal-fejlec">
+            <h2>Szerződések</h2>
+            <button id="uj-gomb" onclick="urlapMegjelenites()">+ Új szerződés</button>
+        </div>
+
+        <div id="urlap" class="rejtett">
+            <h3>Új szerződés hozzáadása</h3>
+            <select id="berlo_id">
+                <option value="">Válassz bérlőt *</option>
+            </select>
+            <select id="helyiseg_id">
+                <option value="">Válassz helyiséget *</option>
+            </select>
+            <input type="date" id="kezdet" placeholder="Kezdet *">
+            <input type="date" id="vege" placeholder="Vége (elhagyható)">
+            <input type="number" id="havi_dij" placeholder="Havi díj (Ft)">
+            <select id="statusz">
+                <option value="aktív">Aktív</option>
+                <option value="lejárt">Lejárt</option>
+                <option value="felmondott">Felmondott</option>
+            </select>
+            <input type="text" id="megjegyzes" placeholder="Megjegyzés">
+            <div class="urlap-gombok">
+                <button onclick="mentese()">Mentés</button>
+                <button onclick="urlapElrejtes()">Mégse</button>
+            </div>
+        </div>
+
         <div id="szerzodesek-lista">
             Betöltés...
         </div>

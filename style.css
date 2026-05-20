@@ -163,3 +163,17 @@ nav a.aktiv {
     background-color: #e74c3c;
     color: white;
 }
+.torles-gomb {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.torles-gomb:hover {
+    background-color: #c0392b;
+}

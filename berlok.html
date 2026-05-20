@@ -19,7 +19,25 @@
     </header>
 
     <main>
-        <h2>Bérlők</h2>
+        <div class="oldal-fejlec">
+            <h2>Bérlők</h2>
+            <button id="uj-gomb" onclick="urlapMegjelenites()">+ Új bérlő</button>
+        </div>
+
+        <div id="urlap" class="rejtett">
+            <h3>Új bérlő hozzáadása</h3>
+            <input type="text" id="nev" placeholder="Teljes név *">
+            <input type="email" id="email" placeholder="Email cím *">
+            <input type="text" id="telefon" placeholder="Telefonszám">
+            <input type="text" id="cim" placeholder="Cím">
+            <input type="text" id="adoszam" placeholder="Adószám">
+            <input type="text" id="megjegyzes" placeholder="Megjegyzés">
+            <div class="urlap-gombok">
+                <button onclick="mentese()">Mentés</button>
+                <button onclick="urlapElrejtes()">Mégse</button>
+            </div>
+        </div>
+
         <div id="berlok-lista">
             Betöltés...
         </div>

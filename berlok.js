@@ -4,18 +4,66 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const { createClient } = supabase
 const client = createClient(supabaseUrl, supabaseKey)
 
-// Bejelentkezés ellenőrzése
 async function bejelentkezesEllenorzese() {
     const { data: { session } } = await client.auth.getSession()
-    if (!session) {
-        window.location.href = 'login.html'
-    }
+    if (!session) window.location.href = 'login.html'
 }
 
-// Kijelentkezés
 async function kijelentkezes() {
     await client.auth.signOut()
     window.location.href = 'login.html'
+}
+
+function urlapMegjelenites() {
+    document.getElementById('urlap').classList.remove('rejtett')
+}
+
+function urlapElrejtes() {
+    document.getElementById('urlap').classList.add('rejtett')
+}
+
+async function mentese() {
+    const nev = document.getElementById('nev').value
+    const email = document.getElementById('email').value
+    const telefon = document.getElementById('telefon').value
+    const cim = document.getElementById('cim').value
+    const adoszam = document.getElementById('adoszam').value
+    const megjegyzes = document.getElementById('megjegyzes').value
+
+    if (!nev || !email) {
+        alert('A név és email cím kötelező!')
+        return
+    }
+
+    const { error } = await client
+        .from('berlok')
+        .insert([{ nev, email, telefon, cim, adoszam, megjegyzes }])
+
+    if (error) {
+        alert('Hiba történt a mentés során!')
+        console.error(error)
+        return
+    }
+
+    urlapElrejtes()
+    berlokBetoltese()
+}
+
+async function torles(id) {
+    if (!confirm('Biztosan törölni szeretnéd ezt a bérlőt?')) return
+
+    const { error } = await client
+        .from('berlok')
+        .delete()
+        .eq('id', id)
+
+    if (error) {
+        alert('Hiba történt a törlés során!')
+        console.error(error)
+        return
+    }
+
+    berlokBetoltese()
 }
 
 async function berlokBetoltese() {
@@ -43,11 +91,10 @@ async function berlokBetoltese() {
                 <p>📧 ${b.email}</p>
                 <p>📞 ${b.telefon ?? 'Nincs megadva'}</p>
                 <p>📍 ${b.cim ?? 'Nincs megadva'}</p>
-            </div>
-            <div>
                 <p>Adószám: ${b.adoszam ?? 'Nincs megadva'}</p>
                 <p>${b.megjegyzes ?? ''}</p>
             </div>
+            <button onclick="torles(${b.id})" class="torles-gomb">Törlés</button>
         </div>
     `).join('')
 }

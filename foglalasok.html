@@ -19,7 +19,35 @@
     </header>
 
     <main>
-        <h2>Foglalások</h2>
+        <div class="oldal-fejlec">
+            <h2>Foglalások</h2>
+            <button id="uj-gomb" onclick="urlapMegjelenites()">+ Új foglalás</button>
+        </div>
+
+        <div id="urlap" class="rejtett">
+            <h3>Új foglalás hozzáadása</h3>
+            <input type="text" id="cim" placeholder="Rendezvény neve *">
+            <select id="helyiseg_id">
+                <option value="">Válassz helyiséget *</option>
+            </select>
+            <select id="berlo_id">
+                <option value="">Válassz bérlőt (elhagyható)</option>
+            </select>
+            <input type="datetime-local" id="kezdet">
+            <input type="datetime-local" id="vege">
+            <input type="number" id="letszam" placeholder="Várható létszám (fő)">
+            <select id="statusz">
+                <option value="függőben">Függőben</option>
+                <option value="megerősítve">Megerősítve</option>
+                <option value="lemondva">Lemondva</option>
+            </select>
+            <input type="text" id="megjegyzes" placeholder="Megjegyzés">
+            <div class="urlap-gombok">
+                <button onclick="mentese()">Mentés</button>
+                <button onclick="urlapElrejtes()">Mégse</button>
+            </div>
+        </div>
+
         <div id="foglalasok-lista">
             Betöltés...
         </div>
