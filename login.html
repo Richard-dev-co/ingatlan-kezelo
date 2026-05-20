@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bejelentkezés – Ingatlan Kezelő</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Ingatlan Kezelő Rendszer</h1>
+    </header>
+
+    <main>
+        <div id="login-urlap">
+            <h2>Bejelentkezés</h2>
+            <input type="email" id="email" placeholder="Email cím">
+            <input type="password" id="jelszo" placeholder="Jelszó">
+            <div class="urlap-gombok">
+                <button onclick="bejelentkezes()">Bejelentkezés</button>
+            </div>
+            <p id="hiba-uzenet" class="rejtett"></p>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+</body>
+</html>

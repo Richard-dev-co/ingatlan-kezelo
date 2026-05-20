@@ -4,6 +4,20 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const { createClient } = supabase
 const client = createClient(supabaseUrl, supabaseKey)
 
+// Bejelentkezés ellenőrzése
+async function bejelentkezesEllenorzese() {
+    const { data: { session } } = await client.auth.getSession()
+    if (!session) {
+        window.location.href = 'login.html'
+    }
+}
+
+// Kijelentkezés
+async function kijelentkezes() {
+    await client.auth.signOut()
+    window.location.href = 'login.html'
+}
+
 // Űrlap megjelenítése/elrejtése
 function urlapMegjelenites() {
     document.getElementById('urlap').classList.remove('rejtett')
@@ -73,4 +87,6 @@ async function helyisegekBetoltese() {
     `).join('')
 }
 
+// Oldal inicializálása
+bejelentkezesEllenorzese()
 helyisegekBetoltese()
