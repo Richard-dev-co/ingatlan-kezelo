@@ -1,6 +1,6 @@
 const supabaseUrl = 'https://hbhugixkxwzelzonwmnr.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhiaHVnaXhreHd6ZWx6b253bW5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwODQ1NzMsImV4cCI6MjA5NDY2MDU3M30.DpLzLUPITaABJdxeZx1GP9M2cTzf4tIdCsDZQV-RYSg'
-
+const client = window.supabase.createClient(supabaseUrl, supabaseKey)
 const { createClient } = supabase
 const client = createClient(supabaseUrl, supabaseKey)
 
