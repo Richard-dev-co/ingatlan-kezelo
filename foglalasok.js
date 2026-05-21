@@ -65,7 +65,7 @@ async function mentese() {
     const berlo_id = document.getElementById('berlo_id').value ? parseInt(document.getElementById('berlo_id').value) : null
     const kezdet = document.getElementById('kezdet').value
     const vege = document.getElementById('vege').value
-    const letszam = document.getElementById('letszam').value
+    const letszam = document.getElementById('letszam').value ? parseInt(document.getElementById('letszam').value) : null
     const statusz = document.getElementById('statusz').value
     const megjegyzes = document.getElementById('megjegyzes').value
 
