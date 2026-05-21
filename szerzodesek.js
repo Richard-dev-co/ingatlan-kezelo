@@ -78,7 +78,13 @@ async function mentese() {
     if (szerkesztesId) {
         const result = await client
             .from('szerzodesek')
-            .update({ berlo_id, helyiseg_id, kezdet, vege: vege || null, havi_dij, statusz, megjegyzes })
+            .update({ 
+                kezdet, 
+                vege: vege || null, 
+                havi_dij, 
+                statusz, 
+                megjegyzes 
+            })
             .eq('id', szerkesztesId)
         error = result.error
     } else {
