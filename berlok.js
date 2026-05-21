@@ -12,11 +12,22 @@ async function kijelentkezes() {
     window.location.href = 'login.html'
 }
 
-function urlapMegjelenites() {
+let szerkesztesId = null
+
+function urlapMegjelenites(berlo = null) {
+    szerkesztesId = berlo ? berlo.id : null
+    document.getElementById('urlap-cim').textContent = berlo ? 'Bérlő szerkesztése' : 'Új bérlő hozzáadása'
+    document.getElementById('nev').value = berlo?.nev ?? ''
+    document.getElementById('email').value = berlo?.email ?? ''
+    document.getElementById('telefon').value = berlo?.telefon ?? ''
+    document.getElementById('cim').value = berlo?.cim ?? ''
+    document.getElementById('adoszam').value = berlo?.adoszam ?? ''
+    document.getElementById('megjegyzes').value = berlo?.megjegyzes ?? ''
     document.getElementById('urlap').classList.remove('rejtett')
 }
 
 function urlapElrejtes() {
+    szerkesztesId = null
     document.getElementById('urlap').classList.add('rejtett')
 }
 
@@ -33,9 +44,20 @@ async function mentese() {
         return
     }
 
-    const { error } = await client
-        .from('berlok')
-        .insert([{ nev, email, telefon, cim, adoszam, megjegyzes }])
+    let error
+
+    if (szerkesztesId) {
+        const result = await client
+            .from('berlok')
+            .update({ nev, email, telefon, cim, adoszam, megjegyzes })
+            .eq('id', szerkesztesId)
+        error = result.error
+    } else {
+        const result = await client
+            .from('berlok')
+            .insert([{ nev, email, telefon, cim, adoszam, megjegyzes }])
+        error = result.error
+    }
 
     if (error) {
         alert('Hiba történt a mentés során!')
@@ -49,18 +71,12 @@ async function mentese() {
 
 async function torles(id) {
     if (!confirm('Biztosan törölni szeretnéd ezt a bérlőt?')) return
-
-    const { error } = await client
-        .from('berlok')
-        .delete()
-        .eq('id', id)
-
+    const { error } = await client.from('berlok').delete().eq('id', id)
     if (error) {
         alert('Hiba történt a törlés során!')
         console.error(error)
         return
     }
-
     berlokBetoltese()
 }
 
@@ -92,7 +108,12 @@ async function berlokBetoltese() {
                 <p>Adószám: ${b.adoszam ?? 'Nincs megadva'}</p>
                 <p>${b.megjegyzes ?? ''}</p>
             </div>
-            <button onclick="torles(${b.id})" class="torles-gomb">Törlés</button>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+                <div style="display:flex;gap:8px">
+                    <button onclick='urlapMegjelenites(${JSON.stringify(b)})' class="szerkeszt-gomb">Szerkesztés</button>
+                    <button onclick="torles(${b.id})" class="torles-gomb">Törlés</button>
+                </div>
+            </div>
         </div>
     `).join('')
 }
