@@ -46,20 +46,24 @@ async function mentese() {
         return
     }
 
+    let id = szerkesztesId
     let error
+
     if (szerkesztesId) {
-        // Szerkesztés
         const result = await client
             .from('helyisegek')
             .update({ nev, tipus, terulet_m2, ferohely, leiras, statusz, ar_havi })
             .eq('id', szerkesztesId)
         error = result.error
     } else {
-        // Új felvitel
         const result = await client
             .from('helyisegek')
             .insert([{ nev, tipus, terulet_m2, ferohely, leiras, statusz, ar_havi }])
+            .select()
         error = result.error
+        if (!error && result.data) {
+            id = result.data[0].id
+        }
     }
 
     if (error) {
@@ -70,8 +74,8 @@ async function mentese() {
 
     // Fájl feltöltése ha van
     const fajl = document.getElementById('fajl').files[0]
-    if (fajl && szerkesztesId) {
-        await fajlFeltoltese(fajl, szerkesztesId)
+    if (fajl && id) {
+        await fajlFeltoltese(fajl, id)
     }
 
     urlapElrejtes()
