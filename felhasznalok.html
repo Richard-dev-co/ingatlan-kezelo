@@ -3,49 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bérlők – Ingatlan Kezelő</title>
+    <title>Felhasználók – Ingatlan Kezelő</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <h1>Ingatlan Kezelő Rendszer</h1>
-       <nav>
+        <nav>
             <a href="index.html">Dashboard</a>
             <a href="helyisegek.html">Helyiségek</a>
-            <a href="berlok.html" class="aktiv">Bérlők</a>
+            <a href="berlok.html">Bérlők</a>
             <a href="szerzodesek.html">Szerződések</a>
             <a href="foglalasok.html">Foglalások</a>
-            <a href="felhasznalok.html">Felhasználók</a>
+            <a href="felhasznalok.html" class="aktiv">Felhasználók</a>
             <a href="#" onclick="kijelentkezes()">Kilépés</a>
         </nav>
     </header>
 
     <main>
         <div class="oldal-fejlec">
-            <h2>Bérlők</h2>
-            <button id="uj-gomb" onclick="urlapMegjelenites()">+ Új bérlő</button>
+            <h2>Felhasználók</h2>
+            <button onclick="urlapMegjelenites()">+ Új felhasználó</button>
         </div>
 
         <div id="urlap" class="rejtett">
-            <h3 id="urlap-cim">Új bérlő hozzáadása</h3>
+            <h3 id="urlap-cim">Új felhasználó hozzáadása</h3>
             <input type="text" id="nev" placeholder="Teljes név *">
             <input type="email" id="email" placeholder="Email cím *">
-            <input type="text" id="telefon" placeholder="Telefonszám">
-            <input type="text" id="cim" placeholder="Cím">
-            <input type="text" id="adoszam" placeholder="Adószám">
-            <input type="text" id="megjegyzes" placeholder="Megjegyzés">
+            <input type="password" id="jelszo" placeholder="Jelszó *">
+            <select id="szerep">
+                <option value="admin">Admin</option>
+                <option value="kolléga">Kolléga</option>
+                <option value="bérlő">Bérlő</option>
+            </select>
             <div class="urlap-gombok">
                 <button onclick="mentese()">Mentés</button>
                 <button onclick="urlapElrejtes()">Mégse</button>
             </div>
         </div>
 
-        <div id="berlok-lista">
+        <div id="felhasznalok-lista">
             Betöltés...
         </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="berlok.js"></script>
+    <script src="felhasznalok.js"></script>
 </body>
 </html>

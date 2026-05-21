@@ -566,3 +566,13 @@ main {
 .fajl-link:hover {
     background-color: #dbeafe;
 }
+.szerepkor-select {
+    padding: 7px 14px;
+    border: 1px solid #e8eaed;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    color: #1a1d23;
+    background: white;
+    cursor: pointer;
+}
