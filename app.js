@@ -30,6 +30,7 @@ function urlapMegjelenites(helyiseg = null) {
 function urlapElrejtes() {
     szerkesztesId = null
     document.getElementById('urlap').classList.add('rejtett')
+    document.getElementById('fajl').value = ''
 }
 
 async function mentese() {
