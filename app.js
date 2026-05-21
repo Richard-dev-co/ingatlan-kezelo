@@ -2,30 +2,36 @@ const supabaseUrl = 'https://hbhugixkxwzelzonwmnr.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhiaHVnaXhreHd6ZWx6b253bW5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwODQ1NzMsImV4cCI6MjA5NDY2MDU3M30.DpLzLUPITaABJdxeZx1GP9M2cTzf4tIdCsDZQV-RYSg'
 const client = window.supabase.createClient(supabaseUrl, supabaseKey)
 
-// Bejelentkezés ellenőrzése
 async function bejelentkezesEllenorzese() {
     const { data: { session } } = await client.auth.getSession()
-    if (!session) {
-        window.location.href = 'login.html'
-    }
+    if (!session) window.location.href = 'login.html'
 }
 
-// Kijelentkezés
 async function kijelentkezes() {
     await client.auth.signOut()
     window.location.href = 'login.html'
 }
 
-// Űrlap megjelenítése/elrejtése
-function urlapMegjelenites() {
+let szerkesztesId = null
+
+function urlapMegjelenites(helyiseg = null) {
+    szerkesztesId = helyiseg ? helyiseg.id : null
+    document.getElementById('urlap-cim').textContent = helyiseg ? 'Helyiség szerkesztése' : 'Új helyiség hozzáadása'
+    document.getElementById('nev').value = helyiseg?.nev ?? ''
+    document.getElementById('tipus').value = helyiseg?.tipus ?? 'iroda'
+    document.getElementById('terulet_m2').value = helyiseg?.terulet_m2 ?? ''
+    document.getElementById('ferohely').value = helyiseg?.ferohely ?? ''
+    document.getElementById('leiras').value = helyiseg?.leiras ?? ''
+    document.getElementById('statusz').value = helyiseg?.statusz ?? 'szabad'
+    document.getElementById('ar_havi').value = helyiseg?.ar_havi ?? ''
     document.getElementById('urlap').classList.remove('rejtett')
 }
 
 function urlapElrejtes() {
+    szerkesztesId = null
     document.getElementById('urlap').classList.add('rejtett')
 }
 
-// Új helyiség mentése
 async function mentese() {
     const nev = document.getElementById('nev').value
     const tipus = document.getElementById('tipus').value
@@ -40,9 +46,21 @@ async function mentese() {
         return
     }
 
-    const { error } = await client
-        .from('helyisegek')
-        .insert([{ nev, tipus, terulet_m2, ferohely, leiras, statusz, ar_havi }])
+    let error
+    if (szerkesztesId) {
+        // Szerkesztés
+        const result = await client
+            .from('helyisegek')
+            .update({ nev, tipus, terulet_m2, ferohely, leiras, statusz, ar_havi })
+            .eq('id', szerkesztesId)
+        error = result.error
+    } else {
+        // Új felvitel
+        const result = await client
+            .from('helyisegek')
+            .insert([{ nev, tipus, terulet_m2, ferohely, leiras, statusz, ar_havi }])
+        error = result.error
+    }
 
     if (error) {
         alert('Hiba történt a mentés során!')
@@ -50,11 +68,38 @@ async function mentese() {
         return
     }
 
+    // Fájl feltöltése ha van
+    const fajl = document.getElementById('fajl').files[0]
+    if (fajl && szerkesztesId) {
+        await fajlFeltoltese(fajl, szerkesztesId)
+    }
+
     urlapElrejtes()
     helyisegekBetoltese()
 }
 
-// Helyiségek betöltése
+async function fajlFeltoltese(fajl, helyisegId) {
+    const nev = `${helyisegId}/${Date.now()}_${fajl.name}`
+    const { error } = await client.storage
+        .from('helyisegek')
+        .upload(nev, fajl)
+    if (error) {
+        alert('Hiba történt a fájl feltöltésekor!')
+        console.error(error)
+    }
+}
+
+async function torles(id) {
+    if (!confirm('Biztosan törölni szeretnéd ezt a helyiséget?')) return
+    const { error } = await client.from('helyisegek').delete().eq('id', id)
+    if (error) {
+        alert('Hiba történt a törlés során!')
+        console.error(error)
+        return
+    }
+    helyisegekBetoltese()
+}
+
 async function helyisegekBetoltese() {
     const lista = document.getElementById('helyisegek-lista')
 
@@ -80,11 +125,16 @@ async function helyisegekBetoltese() {
                 <p>${h.tipus} | ${h.terulet_m2} m² | ${h.ferohely} fő | ${h.ar_havi} Ft/hó</p>
                 <p>${h.leiras ?? ''}</p>
             </div>
-            <span class="statusz ${h.statusz}">${h.statusz}</span>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+                <span class="statusz ${h.statusz}">${h.statusz}</span>
+                <div style="display:flex;gap:8px">
+                    <button onclick='urlapMegjelenites(${JSON.stringify(h)})' class="szerkeszt-gomb">Szerkesztés</button>
+                    <button onclick="torles(${h.id})" class="torles-gomb">Törlés</button>
+                </div>
+            </div>
         </div>
     `).join('')
 }
 
-// Oldal inicializálása
 bejelentkezesEllenorzese()
 helyisegekBetoltese()

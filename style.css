@@ -529,3 +529,20 @@ main {
     color: #6b7280;
     font-weight: 500;
 }
+.szerkeszt-gomb {
+    background-color: white;
+    color: #3b5bdb;
+    border: 1px solid #93c5fd;
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s ease;
+}
+
+.szerkeszt-gomb:hover {
+    background-color: #eff6ff;
+    border-color: #3b5bdb;
+}
