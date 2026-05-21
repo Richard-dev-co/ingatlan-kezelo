@@ -122,22 +122,41 @@ async function helyisegekBetoltese() {
         return
     }
 
-    lista.innerHTML = data.map(h => `
-        <div class="helyiseg-kartya">
-            <div>
-                <h3>${h.nev}</h3>
-                <p>${h.tipus} | ${h.terulet_m2} m² | ${h.ferohely} fő | ${h.ar_havi} Ft/hó</p>
-                <p>${h.leiras ?? ''}</p>
-            </div>
-            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
-                <span class="statusz ${h.statusz}">${h.statusz}</span>
-                <div style="display:flex;gap:8px">
-                    <button onclick='urlapMegjelenites(${JSON.stringify(h)})' class="szerkeszt-gomb">Szerkesztés</button>
-                    <button onclick="torles(${h.id})" class="torles-gomb">Törlés</button>
+    // Minden helyiséghez lekérjük a fájlokat
+    const kartyak = await Promise.all(data.map(async h => {
+        const { data: fajlok } = await client.storage
+            .from('helyisegek')
+            .list(`${h.id}`)
+
+        const fajlLinkek = fajlok && fajlok.length > 0
+            ? fajlok.map(f => {
+                const { data: url } = client.storage
+                    .from('helyisegek')
+                    .getPublicUrl(`${h.id}/${f.name}`)
+                return `<a href="${url.publicUrl}" target="_blank" class="fajl-link">📎 ${f.name}</a>`
+            }).join('')
+            : ''
+
+        return `
+            <div class="helyiseg-kartya">
+                <div>
+                    <h3>${h.nev}</h3>
+                    <p>${h.tipus} | ${h.terulet_m2} m² | ${h.ferohely} fő | ${h.ar_havi} Ft/hó</p>
+                    <p>${h.leiras ?? ''}</p>
+                    <div class="fajl-lista">${fajlLinkek}</div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+                    <span class="statusz ${h.statusz}">${h.statusz}</span>
+                    <div style="display:flex;gap:8px">
+                        <button onclick='urlapMegjelenites(${JSON.stringify(h)})' class="szerkeszt-gomb">Szerkesztés</button>
+                        <button onclick="torles(${h.id})" class="torles-gomb">Törlés</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    `).join('')
+        `
+    }))
+
+    lista.innerHTML = kartyak.join('')
 }
 
 bejelentkezesEllenorzese()
