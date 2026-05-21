@@ -62,7 +62,7 @@ async function berlokBetolteseLegordulo(kivalasztottId = null) {
 async function mentese() {
     const cim = document.getElementById('cim').value
     const helyiseg_id = parseInt(document.getElementById('helyiseg_id').value)
-    const berlo_id = parseInt(document.getElementById('berlo_id').value)
+    const berlo_id = document.getElementById('berlo_id').value ? parseInt(document.getElementById('berlo_id').value) : null
     const kezdet = document.getElementById('kezdet').value
     const vege = document.getElementById('vege').value
     const letszam = document.getElementById('letszam').value
