@@ -107,13 +107,6 @@ async function torles(id) {
 async function helyisegekBetoltese() {
     const lista = document.getElementById('helyisegek-lista')
 
-    // Teszt
-    const { data: tesztFajlok, error: tesztHiba } = await client.storage
-        .from('helyisegek')
-        .list('1')
-    console.log('Teszt fájlok:', tesztFajlok)
-    console.log('Teszt hiba:', tesztHiba)
-
     const { data, error } = await client
         .from('helyisegek')
         .select('*')
