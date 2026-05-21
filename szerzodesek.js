@@ -75,13 +75,14 @@ async function mentese() {
     let id = szerkesztesId
     let error
 
-    if (szerkesztesId) {
-        const result = await client
+   if (szerkesztesId) {
+        // Töröljük a régit
+        await client
             .from('szerzodesek')
-            .update({ berlo_id, helyiseg_id, kezdet, vege: vege || null, havi_dij, statusz, megjegyzes })
+            .delete()
             .eq('id', szerkesztesId)
-        error = result.error
-    } else {
+        
+        // Újat szúrunk be
         const result = await client
             .from('szerzodesek')
             .insert([{ berlo_id, helyiseg_id, kezdet, vege: vege || null, havi_dij, statusz, megjegyzes }])
