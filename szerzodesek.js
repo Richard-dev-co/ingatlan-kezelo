@@ -59,8 +59,8 @@ async function helyisegekBetolteseLegordulo(kivalasztottId = null) {
 }
 
 async function mentese() {
-    const berlo_id = document.getElementById('berlo_id').value
-    const helyiseg_id = document.getElementById('helyiseg_id').value
+    const berlo_id = parseInt(document.getElementById('berlo_id').value)
+    const helyiseg_id = parseInt(document.getElementById('helyiseg_id').value)
     const kezdet = document.getElementById('kezdet').value
     const vege = document.getElementById('vege').value
     const havi_dij = document.getElementById('havi_dij').value
@@ -81,8 +81,7 @@ async function mentese() {
             .update({ berlo_id, helyiseg_id, kezdet, vege: vege || null, havi_dij, statusz, megjegyzes })
             .eq('id', szerkesztesId)
         error = result.error
-    }
-     else {
+    } else {
         const result = await client
             .from('szerzodesek')
             .insert([{ berlo_id, helyiseg_id, kezdet, vege: vege || null, havi_dij, statusz, megjegyzes }])
@@ -97,7 +96,6 @@ async function mentese() {
         return
     }
 
-    // Fájl feltöltése
     const fajl = document.getElementById('fajl').files[0]
     if (fajl && id) {
         const nev = `${id}/${Date.now()}_${fajl.name}`
