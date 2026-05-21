@@ -26,15 +26,15 @@
         </div>
 
         <div id="urlap" class="rejtett">
-            <h3>Új szerződés hozzáadása</h3>
+            <h3 id="urlap-cim">Új szerződés hozzáadása</h3>
             <select id="berlo_id">
                 <option value="">Válassz bérlőt *</option>
             </select>
             <select id="helyiseg_id">
                 <option value="">Válassz helyiséget *</option>
             </select>
-            <input type="date" id="kezdet" placeholder="Kezdet *">
-            <input type="date" id="vege" placeholder="Vége (elhagyható)">
+            <input type="date" id="kezdet">
+            <input type="date" id="vege">
             <input type="number" id="havi_dij" placeholder="Havi díj (Ft)">
             <select id="statusz">
                 <option value="aktív">Aktív</option>
@@ -42,6 +42,8 @@
                 <option value="felmondott">Felmondott</option>
             </select>
             <input type="text" id="megjegyzes" placeholder="Megjegyzés">
+            <label style="font-size:13px;color:#6b7280;margin-bottom:4px;display:block">Fájl feltöltése (szerződés)</label>
+            <input type="file" id="fajl" accept=".pdf,.jpg,.jpeg,.png">
             <div class="urlap-gombok">
                 <button onclick="mentese()">Mentés</button>
                 <button onclick="urlapElrejtes()">Mégse</button>
