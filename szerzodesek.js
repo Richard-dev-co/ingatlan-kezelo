@@ -75,14 +75,24 @@ async function mentese() {
     let id = szerkesztesId
     let error
 
-   if (szerkesztesId) {
-        // Töröljük a régit
-        await client
+    if (szerkesztesId) {
+        // Szerkesztés – csak a nem-foreign-key mezőket frissítjük
+        const result = await client
             .from('szerzodesek')
-            .delete()
+            .update({ kezdet, vege: vege || null, havi_dij, statusz, megjegyzes })
             .eq('id', szerkesztesId)
-        
-        // Újat szúrunk be
+        error = result.error
+
+        // Ha a bérlő vagy helyiség változott, külön frissítjük
+        if (!error) {
+            await client.rpc('update_szerzodes_kapcsolatok', {
+                p_id: szerkesztesId,
+                p_berlo_id: berlo_id,
+                p_helyiseg_id: helyiseg_id
+            })
+        }
+    } else {
+        // Új felvitel
         const result = await client
             .from('szerzodesek')
             .insert([{ berlo_id, helyiseg_id, kezdet, vege: vege || null, havi_dij, statusz, megjegyzes }])
