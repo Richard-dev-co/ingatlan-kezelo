@@ -77,14 +77,12 @@ async function mentese() {
     let error
 
     if (szerkesztesId) {
-        // Szerkesztés – csak a nem-foreign-key mezőket frissítjük
         const result = await client
             .from('szerzodesek')
             .update({ kezdet, vege: vege || null, havi_dij, statusz, megjegyzes })
             .eq('id', szerkesztesId)
         error = result.error
 
-        // Ha a bérlő vagy helyiség változott, külön frissítjük
         if (!error) {
             await client.rpc('update_szerzodes_kapcsolatok', {
                 p_id: szerkesztesId,
@@ -93,7 +91,6 @@ async function mentese() {
             })
         }
     } else {
-        // Új felvitel
         const result = await client
             .from('szerzodesek')
             .insert([{ berlo_id, helyiseg_id, kezdet, vege: vege || null, havi_dij, statusz, megjegyzes }])
@@ -159,12 +156,12 @@ async function szerzodesekBetoltese() {
             .list(`${sz.id}`)
 
         const fajlLinkek = fajlok && fajlok.length > 0
-            ? fajlok.map(f => {
-                const { data: url } = client.storage
+            ? (await Promise.all(fajlok.map(async f => {
+                const { data: url } = await client.storage
                     .from('szerzodesek')
-                    .getPublicUrl(`${sz.id}/${f.name}`)
-                return `<a href="${url.publicUrl}" target="_blank" class="fajl-link">📎 ${f.name}</a>`
-            }).join('')
+                    .createSignedUrl(`${sz.id}/${f.name}`, 3600)
+                return `<a href="${url.signedUrl}" target="_blank" class="fajl-link">📎 ${f.name}</a>`
+            }))).join('')
             : ''
 
         return `
