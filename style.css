@@ -576,3 +576,35 @@ main {
     background: white;
     cursor: pointer;
 }
+.szuro-sor {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.szuro-sor input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #e8eaed;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.szuro-sor input:focus {
+    border-color: #3b5bdb;
+}
+
+.szuro-sor select {
+    padding: 10px 14px;
+    border: 1px solid #e8eaed;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    color: #1a1d23;
+    background: white;
+    cursor: pointer;
+}

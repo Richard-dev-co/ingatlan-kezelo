@@ -50,7 +50,15 @@
                 <button onclick="urlapElrejtes()">Mégse</button>
             </div>
         </div>
-
+        <div class="szuro-sor">
+            <input type="text" id="kereses" placeholder="🔍 Keresés bérlő vagy helyiség neve alapján..." oninput="szures()">
+            <select id="statusz-szuro" onchange="szures()">
+                <option value="">Minden státusz</option>
+                <option value="aktív">Aktív</option>
+                <option value="lejárt">Lejárt</option>
+                <option value="felmondott">Felmondott</option>
+            </select>
+        </div>
         <div id="szerzodesek-lista">
             Betöltés...
         </div>
