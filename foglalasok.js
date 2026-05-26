@@ -59,6 +59,46 @@ async function berlokBetolteseLegordulo(kivalasztottId = null) {
         select.appendChild(option)
     })
 }
+async function emailKuldes(foglalas, berlo, helyiseg) {
+    if (!berlo || !berlo.email) return
+
+    const RESEND_API_KEY = 're_An3asces_CjQGiedy5AGpiGBaWcpYjiQz'
+
+    const emailTartalom = `
+        <h2>Foglalás visszaigazolás</h2>
+        <p>Kedves ${berlo.nev}!</p>
+        <p>Az alábbi foglalást rögzítettük:</p>
+        <table style="border-collapse:collapse;width:100%">
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Rendezvény neve</strong></td><td style="padding:8px;border:1px solid #ddd">${foglalas.cim}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Helyiség</strong></td><td style="padding:8px;border:1px solid #ddd">${helyiseg.nev}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Kezdet</strong></td><td style="padding:8px;border:1px solid #ddd">${new Date(foglalas.kezdet).toLocaleString('hu-HU')}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Vége</strong></td><td style="padding:8px;border:1px solid #ddd">${new Date(foglalas.vege).toLocaleString('hu-HU')}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Várható létszám</strong></td><td style="padding:8px;border:1px solid #ddd">${foglalas.letszam ?? 'Nincs megadva'} fő</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Státusz</strong></td><td style="padding:8px;border:1px solid #ddd">${foglalas.statusz}</td></tr>
+            <tr><td style="padding:8px;border:1px solid #ddd"><strong>Megjegyzés</strong></td><td style="padding:8px;border:1px solid #ddd">${foglalas.megjegyzes ?? 'Nincs'}</td></tr>
+        </table>
+        <p>Köszönjük!</p>
+    `
+
+    try {
+        await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${RESEND_API_KEY}`
+            },
+            body: JSON.stringify({
+                from: 'Ingatlan Kezelő <onboarding@resend.dev>',
+                to: berlo.email,
+                subject: `Foglalás visszaigazolás – ${foglalas.cim}`,
+                html: emailTartalom
+            })
+        })
+        console.log('Email elküldve!')
+    } catch (err) {
+        console.error('Email küldési hiba:', err)
+    }
+}
 
 async function mentese() {
     const cim = document.getElementById('cim').value
@@ -97,6 +137,16 @@ async function mentese() {
     }
 
     urlapElrejtes()
+
+    // Email küldés új foglaláskor ha van bérlő
+    if (!szerkesztesId && berlo_id) {
+        const { data: berlo } = await client.from('berlok').select('*').eq('id', berlo_id).single()
+        const { data: helyiseg } = await client.from('helyisegek').select('*').eq('id', helyiseg_id).single()
+        const ujFoglalas = { cim, kezdet, vege, letszam, statusz, megjegyzes }
+        await emailKuldes(ujFoglalas, berlo, helyiseg)
+    }
+
+    foglalasokBetoltese()
     foglalasokBetoltese()
 }
 
