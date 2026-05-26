@@ -132,21 +132,28 @@ async function torles(id) {
     szerzodesekBetoltese()
 }
 
-async function szerzodesekBetoltese() {
+let osszesSzerzodes = []
+
+function szures() {
+    const kereses = document.getElementById('kereses').value.toLowerCase()
+    const statusz = document.getElementById('statusz-szuro').value
+
+    const szurt = osszesSzerzodes.filter(sz => {
+        const berloNev = sz.berlok?.nev?.toLowerCase() ?? ''
+        const helyisegNev = sz.helyisegek?.nev?.toLowerCase() ?? ''
+        const egyezikKereses = berloNev.includes(kereses) || helyisegNev.includes(kereses)
+        const egyezikStatusz = statusz === '' || sz.statusz === statusz
+        return egyezikKereses && egyezikStatusz
+    })
+
+    kartyakMegjelenites(szurt)
+}
+
+async function kartyakMegjelenites(data) {
     const lista = document.getElementById('szerzodesek-lista')
 
-    const { data, error } = await client
-        .from('szerzodesek')
-        .select(`*, berlok (nev), helyisegek (nev)`)
-
-    if (error) {
-        lista.innerHTML = '<p>Hiba történt az adatok betöltésekor.</p>'
-        console.error(error)
-        return
-    }
-
     if (data.length === 0) {
-        lista.innerHTML = '<p>Nincsenek szerződések.</p>'
+        lista.innerHTML = '<p>Nincs találat.</p>'
         return
     }
 
@@ -177,6 +184,7 @@ async function szerzodesekBetoltese() {
                 <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
                     <span class="statusz ${sz.statusz}">${sz.statusz}</span>
                     <div style="display:flex;gap:8px">
+                        <button onclick="pdfGeneralas(${sz.id})" class="szerkeszt-gomb">📄 PDF</button>
                         <button onclick='urlapMegjelenites(${JSON.stringify(sz)})' class="szerkeszt-gomb">Szerkesztés</button>
                         <button onclick="torles(${sz.id})" class="torles-gomb">Törlés</button>
                     </div>
@@ -186,6 +194,28 @@ async function szerzodesekBetoltese() {
     }))
 
     lista.innerHTML = kartyak.join('')
+}
+
+async function szerzodesekBetoltese() {
+    const lista = document.getElementById('szerzodesek-lista')
+
+    const { data, error } = await client
+        .from('szerzodesek')
+        .select(`*, berlok (*), helyisegek (*)`)
+
+    if (error) {
+        lista.innerHTML = '<p>Hiba történt az adatok betöltésekor.</p>'
+        console.error(error)
+        return
+    }
+
+    if (data.length === 0) {
+        lista.innerHTML = '<p>Nincsenek szerződések.</p>'
+        return
+    }
+
+    osszesSzerzodes = data
+    kartyakMegjelenites(data)
 }
 
 bejelentkezesEllenorzese()
