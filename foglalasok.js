@@ -13,6 +13,7 @@ async function kijelentkezes() {
 }
 
 let szerkesztesId = null
+let osszesFoglalas = []
 
 function urlapMegjelenites(foglalas = null) {
     szerkesztesId = foglalas ? foglalas.id : null
@@ -110,6 +111,82 @@ async function torles(id) {
     foglalasokBetoltese()
 }
 
+async function pdfGeneralas(id) {
+    const foglalas = osszesFoglalas.find(f => f.id === id)
+    if (!foglalas) return
+
+    const { jsPDF } = window.jspdf
+    const doc = new jsPDF()
+
+    // Magyar font betöltése
+    const fontUrl = './Roboto-Regular.ttf'
+    const fontResponse = await fetch(fontUrl)
+    const fontBuffer = await fontResponse.arrayBuffer()
+    const fontBase64 = btoa(
+        new Uint8Array(fontBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
+    )
+    doc.addFileToVFS('Roboto.ttf', fontBase64)
+    doc.addFont('Roboto.ttf', 'Roboto', 'normal')
+    doc.setFont('Roboto')
+
+    // Fejléc
+    doc.setFontSize(20)
+    doc.text('FOGLALÁS VISSZAIGAZOLÁS', 105, 20, { align: 'center' })
+
+    doc.setFontSize(10)
+    doc.setTextColor(100)
+    doc.text(`Foglalás azonosító: #${foglalas.id}`, 105, 28, { align: 'center' })
+
+    doc.setDrawColor(200)
+    doc.line(20, 33, 190, 33)
+
+    // Rendezvény adatai
+    doc.setFontSize(12)
+    doc.setTextColor(0)
+    doc.text('Rendezvény adatai', 20, 45)
+
+    doc.setFontSize(11)
+    doc.text(`Rendezvény neve: ${foglalas.cim}`, 20, 55)
+    doc.text(`Helyiség: ${foglalas.helyisegek.nev}`, 20, 63)
+    doc.text(`Kezdet: ${new Date(foglalas.kezdet).toLocaleString('hu-HU')}`, 20, 71)
+    doc.text(`Vége: ${new Date(foglalas.vege).toLocaleString('hu-HU')}`, 20, 79)
+    doc.text(`Várható létszám: ${foglalas.letszam ?? 'Nincs megadva'} fő`, 20, 87)
+
+    doc.line(20, 93, 190, 93)
+
+    // Bérlő adatai
+    doc.setFontSize(12)
+    doc.text('Kapcsolattartó', 20, 103)
+
+    doc.setFontSize(11)
+    doc.text(`Név: ${foglalas.berlok ? foglalas.berlok.nev : 'Ismeretlen vendég'}`, 20, 113)
+
+    doc.line(20, 120, 190, 120)
+
+    // Státusz
+    doc.setFontSize(12)
+    doc.text('Státusz és megjegyzés', 20, 130)
+
+    doc.setFontSize(11)
+    doc.text(`Státusz: ${foglalas.statusz}`, 20, 140)
+    doc.text(`Megjegyzés: ${foglalas.megjegyzes ?? 'Nincs'}`, 20, 148)
+
+    doc.line(20, 200, 190, 200)
+
+    // Aláírás
+    doc.setFontSize(11)
+    doc.text('Bérbeadó aláírása:', 20, 220)
+    doc.text('Bérlő aláírása:', 120, 220)
+    doc.line(20, 235, 80, 235)
+    doc.line(120, 235, 180, 235)
+
+    doc.setFontSize(9)
+    doc.setTextColor(100)
+    doc.text(`Generálva: ${new Date().toLocaleDateString('hu-HU')}`, 105, 285, { align: 'center' })
+
+    doc.save(`foglalas_${foglalas.cim}_${foglalas.id}.pdf`)
+}
+
 async function foglalasokBetoltese() {
     const lista = document.getElementById('foglalasok-lista')
 
@@ -129,6 +206,8 @@ async function foglalasokBetoltese() {
         return
     }
 
+    osszesFoglalas = data
+
     lista.innerHTML = data.map(f => `
         <div class="helyiseg-kartya">
             <div>
@@ -142,6 +221,7 @@ async function foglalasokBetoltese() {
             <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
                 <span class="statusz ${f.statusz}">${f.statusz}</span>
                 <div style="display:flex;gap:8px">
+                    <button onclick="pdfGeneralas(${f.id})" class="szerkeszt-gomb">📄 PDF</button>
                     <button onclick='urlapMegjelenites(${JSON.stringify(f)})' class="szerkeszt-gomb">Szerkesztés</button>
                     <button onclick="torles(${f.id})" class="torles-gomb">Törlés</button>
                 </div>
