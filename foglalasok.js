@@ -81,14 +81,12 @@ async function emailKuldes(foglalas, berlo, helyiseg) {
     `
 
     try {
-        await fetch('https://api.resend.com/emails', {
+        await fetch('/api/send-email', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${RESEND_API_KEY}`
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                from: 'Ingatlan Kezelő <onboarding@resend.dev>',
                 to: berlo.email,
                 subject: `Foglalás visszaigazolás – ${foglalas.cim}`,
                 html: emailTartalom
