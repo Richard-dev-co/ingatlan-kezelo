@@ -225,7 +225,7 @@ async function pdfGeneralas(id) {
     const doc = new jsPDF()
 
    // Magyar font betöltése (TTF)
-    const fontUrl = 'https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxKWctz.ttf'
+    const fontUrl = './Roboto-Regular.ttf'
     const fontResponse = await fetch(fontUrl)
     const fontBuffer = await fontResponse.arrayBuffer()
     const fontBase64 = btoa(
