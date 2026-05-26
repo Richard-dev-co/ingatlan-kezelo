@@ -2,6 +2,92 @@ const supabaseUrl = 'https://hbhugixkxwzelzonwmnr.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhiaHVnaXhreHd6ZWx6b253bW5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwODQ1NzMsImV4cCI6MjA5NDY2MDU3M30.DpLzLUPITaABJdxeZx1GP9M2cTzf4tIdCsDZQV-RYSg'
 const client = window.supabase.createClient(supabaseUrl, supabaseKey)
 
+async function pdfGeneralas(id) {
+    const szerzodes = osszesSzerzodes.find(sz => sz.id === id)
+    if (!szerzodes) return
+
+    const { jsPDF } = window.jspdf
+    const doc = new jsPDF()
+
+    // Fejléc
+    doc.setFontSize(20)
+    doc.setFont('helvetica', 'bold')
+    doc.text('BÉRLETI SZERZŐDÉS', 105, 20, { align: 'center' })
+
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(100)
+    doc.text(`Szerződés azonosító: #${szerzodes.id}`, 105, 28, { align: 'center' })
+
+    // Vonal
+    doc.setDrawColor(200)
+    doc.line(20, 33, 190, 33)
+
+    // Bérlő adatai
+    doc.setFontSize(12)
+    doc.setFont('helvetica', 'bold')
+    doc.setTextColor(0)
+    doc.text('Bérlő adatai', 20, 45)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    doc.text(`Név: ${szerzodes.berlok.nev}`, 20, 55)
+    doc.text(`Email: ${szerzodes.berlok.email}`, 20, 63)
+    doc.text(`Telefon: ${szerzodes.berlok.telefon ?? 'Nincs megadva'}`, 20, 71)
+    doc.text(`Cím: ${szerzodes.berlok.cim ?? 'Nincs megadva'}`, 20, 79)
+    doc.text(`Adószám: ${szerzodes.berlok.adoszam ?? 'Nincs megadva'}`, 20, 87)
+
+    // Vonal
+    doc.setDrawColor(200)
+    doc.line(20, 93, 190, 93)
+
+    // Helyiség adatai
+    doc.setFontSize(12)
+    doc.setFont('helvetica', 'bold')
+    doc.text('Bérelt helyiség', 20, 103)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    doc.text(`Helyiség neve: ${szerzodes.helyisegek.nev}`, 20, 113)
+    doc.text(`Típus: ${szerzodes.helyisegek.tipus ?? 'Nincs megadva'}`, 20, 121)
+    doc.text(`Terület: ${szerzodes.helyisegek.terulet_m2 ?? 'Nincs megadva'} m²`, 20, 129)
+
+    // Vonal
+    doc.setDrawColor(200)
+    doc.line(20, 135, 190, 135)
+
+    // Szerződés feltételei
+    doc.setFontSize(12)
+    doc.setFont('helvetica', 'bold')
+    doc.text('Szerződés feltételei', 20, 145)
+
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(11)
+    doc.text(`Kezdet: ${szerzodes.kezdet}`, 20, 155)
+    doc.text(`Vége: ${szerzodes.vege ?? 'Határozatlan idejű'}`, 20, 163)
+    doc.text(`Havi díj: ${szerzodes.havi_dij ?? 'Nincs megadva'} Ft`, 20, 171)
+    doc.text(`Státusz: ${szerzodes.statusz}`, 20, 179)
+    doc.text(`Megjegyzés: ${szerzodes.megjegyzes ?? 'Nincs'}`, 20, 187)
+
+    // Vonal
+    doc.setDrawColor(200)
+    doc.line(20, 220, 190, 220)
+
+    // Aláírás
+    doc.setFontSize(11)
+    doc.text('Bérbeadó aláírása:', 20, 240)
+    doc.text('Bérlő aláírása:', 120, 240)
+    doc.line(20, 255, 80, 255)
+    doc.line(120, 255, 180, 255)
+
+    // Dátum
+    doc.setFontSize(9)
+    doc.setTextColor(100)
+    doc.text(`Generálva: ${new Date().toLocaleDateString('hu-HU')}`, 105, 285, { align: 'center' })
+
+    // Mentés
+    doc.save(`szerzodes_${szerzodes.berlok.nev}_${szerzodes.kezdet}.pdf`)
+}
 async function bejelentkezesEllenorzese() {
     const { data: { session } } = await client.auth.getSession()
     if (!session) window.location.href = 'login.html'
