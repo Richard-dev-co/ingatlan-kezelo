@@ -238,11 +238,11 @@ async function pdfGeneralas(id) {
     // Fejléc
     doc.setFontSize(20)
     doc.setFont('Roboto', 'normal')
-    doc.text('BERLETI SZERZODES', 105, 20, { align: 'center' })
+    doc.text('BÉRLETI SZERZŐDÉS', 105, 20, { align: 'center' })
 
     doc.setFontSize(10)
     doc.setTextColor(100)
-    doc.text(`Szerzodes azonosito: #${szerzodes.id}`, 105, 28, { align: 'center' })
+    doc.text(`Szerződés azonosító: #${szerzodes.id}`, 105, 28, { align: 'center' })
 
     doc.setDrawColor(200)
     doc.line(20, 33, 190, 33)
@@ -250,51 +250,51 @@ async function pdfGeneralas(id) {
     // Bérlő adatai
     doc.setFontSize(12)
     doc.setTextColor(0)
-    doc.text('Berlo adatai', 20, 45)
+    doc.text('Bérlő adatai', 20, 45)
 
     doc.setFontSize(11)
-    doc.text(`Nev: ${szerzodes.berlok.nev}`, 20, 55)
+    doc.text(`Név: ${szerzodes.berlok.nev}`, 20, 55)
     doc.text(`Email: ${szerzodes.berlok.email}`, 20, 63)
     doc.text(`Telefon: ${szerzodes.berlok.telefon ?? 'Nincs megadva'}`, 20, 71)
-    doc.text(`Cim: ${szerzodes.berlok.cim ?? 'Nincs megadva'}`, 20, 79)
-    doc.text(`Adoszam: ${szerzodes.berlok.adoszam ?? 'Nincs megadva'}`, 20, 87)
+    doc.text(`Cím: ${szerzodes.berlok.cim ?? 'Nincs megadva'}`, 20, 79)
+    doc.text(`Adószám: ${szerzodes.berlok.adoszam ?? 'Nincs megadva'}`, 20, 87)
 
     doc.line(20, 93, 190, 93)
 
     // Helyiség
     doc.setFontSize(12)
-    doc.text('Berelt helyiseg', 20, 103)
+    doc.text('Bérelt helyiség', 20, 103)
 
     doc.setFontSize(11)
-    doc.text(`Helyiseg neve: ${szerzodes.helyisegek.nev}`, 20, 113)
-    doc.text(`Tipus: ${szerzodes.helyisegek.tipus ?? 'Nincs megadva'}`, 20, 121)
-    doc.text(`Terulet: ${szerzodes.helyisegek.terulet_m2 ?? 'Nincs megadva'} m2`, 20, 129)
+    doc.text(`Helyiség neve: ${szerzodes.helyisegek.nev}`, 20, 113)
+    doc.text(`Típus: ${szerzodes.helyisegek.tipus ?? 'Nincs megadva'}`, 20, 121)
+    doc.text(`Terület: ${szerzodes.helyisegek.terulet_m2 ?? 'Nincs megadva'} m²`, 20, 129)
 
     doc.line(20, 135, 190, 135)
 
     // Feltételek
     doc.setFontSize(12)
-    doc.text('Szerzodes feltetelei', 20, 145)
+    doc.text('Szerződés feltételei', 20, 145)
 
     doc.setFontSize(11)
     doc.text(`Kezdet: ${szerzodes.kezdet}`, 20, 155)
-    doc.text(`Vege: ${szerzodes.vege ?? 'Hatarozatlan ideju'}`, 20, 163)
-    doc.text(`Havi dij: ${szerzodes.havi_dij ?? 'Nincs megadva'} Ft`, 20, 171)
-    doc.text(`Statusz: ${szerzodes.statusz}`, 20, 179)
-    doc.text(`Megjegyzes: ${szerzodes.megjegyzes ?? 'Nincs'}`, 20, 187)
+    doc.text(`Vége: ${szerzodes.vege ?? 'Határozatlan idejű'}`, 20, 163)
+    doc.text(`Havi díj: ${szerzodes.havi_dij ?? 'Nincs megadva'} Ft`, 20, 171)
+    doc.text(`Státusz: ${szerzodes.statusz}`, 20, 179)
+    doc.text(`Megjegyzés: ${szerzodes.megjegyzes ?? 'Nincs'}`, 20, 187)
 
     doc.line(20, 220, 190, 220)
 
     // Aláírás
     doc.setFontSize(11)
-    doc.text('Berbeado alairasa:', 20, 240)
-    doc.text('Berlo alairasa:', 120, 240)
+    doc.text('Bérbeadó aláírása:', 20, 240)
+    doc.text('Bérlő aláírása:', 120, 240)
     doc.line(20, 255, 80, 255)
     doc.line(120, 255, 180, 255)
 
     doc.setFontSize(9)
     doc.setTextColor(100)
-    doc.text(`Generalva: ${new Date().toLocaleDateString('hu-HU')}`, 105, 285, { align: 'center' })
+    doc.text(`Generálva: ${new Date().toLocaleDateString('hu-HU')}`, 105, 285, { align: 'center' })
 
     doc.save(`szerzodes_${szerzodes.berlok.nev}_${szerzodes.kezdet}.pdf`)
 }
