@@ -1,5 +1,27 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+:root {
+    --bg: #f8f9fb;
+    --surface: #ffffff;
+    --border: #e8eaed;
+    --text: #1a1d23;
+    --text-secondary: #6b7280;
+    --primary: #3b5bdb;
+    --primary-hover: #3451c7;
+    --header-bg: #ffffff;
+    --shadow: rgba(0,0,0,0.06);
+}
 
+[data-theme="dark"] {
+    --bg: #0f1117;
+    --surface: #1a1d23;
+    --border: #2d3139;
+    --text: #f0f2f5;
+    --text-secondary: #9ca3af;
+    --primary: #4c6ef5;
+    --primary-hover: #3b5bdb;
+    --header-bg: #1a1d23;
+    --shadow: rgba(0,0,0,0.3);
+}
 * {
     margin: 0;
     padding: 0;
@@ -8,14 +30,15 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #f8f9fb;
-    color: #1a1d23;
+    background-color: var(--bg);
+    color: var(--text);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* HEADER */
 header {
-    background: white;
-    border-bottom: 1px solid #e8eaed;
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border);
     padding: 0 40px;
     display: flex;
     align-items: center;
@@ -24,13 +47,13 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    box-shadow: 0 1px 3px var(--shadow);
 }
 
 header h1 {
     font-size: 18px;
     font-weight: 600;
-    color: #1a1d23;
+    color: var(--text);
     letter-spacing: -0.3px;
 }
 
@@ -110,8 +133,8 @@ main {
 
 /* KÁRTYÁK */
 .helyiseg-kartya {
-    background: white;
-    border: 1px solid #e8eaed;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 20px 24px;
     margin-bottom: 12px;
@@ -121,19 +144,15 @@ main {
     transition: box-shadow 0.15s ease;
 }
 
-.helyiseg-kartya:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
 .helyiseg-kartya h3 {
     font-size: 16px;
     font-weight: 600;
-    color: #1a1d23;
+    color: var(--text);
     margin-bottom: 6px;
 }
 
 .helyiseg-kartya p {
-    color: #6b7280;
+    color: var(--text-secondary);
     font-size: 14px;
     margin-bottom: 3px;
 }
@@ -198,8 +217,8 @@ main {
 }
 
 #urlap {
-    background: white;
-    border: 1px solid #e8eaed;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 28px;
     margin-bottom: 24px;
@@ -208,7 +227,7 @@ main {
 #urlap h3 {
     font-size: 16px;
     font-weight: 600;
-    color: #1a1d23;
+    color: var(--text);
     margin-bottom: 20px;
 }
 
@@ -216,23 +235,23 @@ main {
     width: 100%;
     padding: 10px 14px;
     margin-bottom: 12px;
-    border: 1px solid #e8eaed;
+    border: 1px solid var(--border);
     border-radius: 8px;
     font-size: 14px;
     font-family: 'Inter', sans-serif;
-    color: #1a1d23;
-    background: #fafafa;
+    color: var(--text);
+    background: var(--bg);
     transition: border-color 0.15s ease;
     outline: none;
 }
 
 #urlap input:focus, #urlap select:focus {
-    border-color: #3b5bdb;
-    background: white;
+    border-color: var(--primary);
+    background: var(--surface);
 }
 
 #urlap input::placeholder {
-    color: #9ca3af;
+    color: var(--text-secondary);
 }
 
 .urlap-gombok {
@@ -292,19 +311,19 @@ main {
 
 /* LOGIN OLDAL */
 #login-urlap {
-    background: white;
-    border: 1px solid #e8eaed;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 16px;
     padding: 40px;
     max-width: 420px;
     margin: 80px auto;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    box-shadow: 0 4px 24px var(--shadow);
 }
 
 #login-urlap h2 {
     font-size: 22px;
     font-weight: 700;
-    color: #1a1d23;
+    color: var(--text);
     margin-bottom: 24px;
     text-align: center;
 }
@@ -313,35 +332,18 @@ main {
     width: 100%;
     padding: 11px 14px;
     margin-bottom: 12px;
-    border: 1px solid #e8eaed;
+    border: 1px solid var(--border);
     border-radius: 8px;
     font-size: 14px;
     font-family: 'Inter', sans-serif;
-    color: #1a1d23;
+    color: var(--text);
+    background: var(--bg);
     outline: none;
     transition: border-color 0.15s ease;
 }
 
 #login-urlap input:focus {
-    border-color: #3b5bdb;
-}
-
-#login-urlap .urlap-gombok button {
-    width: 100%;
-    padding: 12px;
-    background-color: #3b5bdb;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 500;
-    font-family: 'Inter', sans-serif;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-}
-
-#login-urlap .urlap-gombok button:hover {
-    background-color: #3451c7;
+    border-color: var(--primary);
 }
 
 #hiba-uzenet {
@@ -359,8 +361,8 @@ main {
 }
 
 .stat-kartya {
-    background: white;
-    border: 1px solid #e8eaed;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 24px;
     display: flex;
@@ -414,8 +416,8 @@ main {
 }
 
 .dashboard-panel {
-    background: white;
-    border: 1px solid #e8eaed;
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 12px;
     padding: 24px;
 }
@@ -423,10 +425,10 @@ main {
 .dashboard-panel h3 {
     font-size: 16px;
     font-weight: 600;
-    color: #1a1d23;
+    color: var(--text);
     margin-bottom: 16px;
     padding-bottom: 12px;
-    border-bottom: 1px solid #e8eaed;
+    border-bottom: 1px solid var(--border);
 }
 
 .foglalas-sor {
