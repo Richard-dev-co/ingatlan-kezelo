@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Felhasználók – Ingatlan Kezelő</title>
+    <title>Épületek – Ingatlan Kezelő</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,11 +12,11 @@
         <nav>
             <a href="index.html">Dashboard</a>
             <a href="helyisegek.html">Helyiségek</a>
-            <a href="epuletek.html">Épületek</a>
+            <a href="epuletek.html" class="aktiv">Épületek</a>
             <a href="berlok.html">Bérlők</a>
             <a href="szerzodesek.html">Szerződések</a>
             <a href="foglalasok.html">Foglalások</a>
-            <a href="felhasznalok.html" class="aktiv">Felhasználók</a>
+            <a href="felhasznalok.html">Felhasználók</a>
             <button onclick="setemaValt()" id="tema-gomb" style="background:none;border:none;cursor:pointer;font-size:20px;padding:4px 8px;">🌙</button>
             <a href="#" onclick="kijelentkezes()">Kilépés</a>
         </nav>
@@ -24,33 +24,41 @@
 
     <main>
         <div class="oldal-fejlec">
-            <h2>Felhasználók</h2>
-            <button onclick="urlapMegjelenites()">+ Új felhasználó</button>
+            <h2>Épületek és Emeletek</h2>
+            <button onclick="urlapMegjelenites()">+ Új épület</button>
         </div>
 
         <div id="urlap" class="rejtett">
-            <h3 id="urlap-cim">Új felhasználó hozzáadása</h3>
-            <input type="text" id="nev" placeholder="Teljes név *">
-            <input type="email" id="email" placeholder="Email cím *">
-            <input type="password" id="jelszo" placeholder="Jelszó *">
-            <select id="szerep">
-                <option value="admin">Admin</option>
-                <option value="kolléga">Kolléga</option>
-                <option value="bérlő">Bérlő</option>
-            </select>
+            <h3 id="urlap-cim">Új épület hozzáadása</h3>
+            <input type="text" id="nev" placeholder="Épület neve *">
+            <input type="text" id="cim" placeholder="Cím">
+            <input type="text" id="leiras" placeholder="Leírás">
             <div class="urlap-gombok">
                 <button onclick="mentese()">Mentés</button>
                 <button onclick="urlapElrejtes()">Mégse</button>
             </div>
         </div>
 
-        <div id="felhasznalok-lista">
+        <div id="emelet-urlap" class="rejtett">
+            <h3 id="emelet-urlap-cim">Új emelet hozzáadása</h3>
+            <select id="emelet-epulet-id">
+                <option value="">Válassz épületet *</option>
+            </select>
+            <input type="text" id="emelet-nev" placeholder="Emelet neve * (pl. F0, F1, Tetőtér)">
+            <input type="text" id="emelet-leiras" placeholder="Leírás">
+            <div class="urlap-gombok">
+                <button onclick="emeletMentese()">Mentés</button>
+                <button onclick="emeletUrlapElrejtes()">Mégse</button>
+            </div>
+        </div>
+
+        <div id="epuletek-lista">
             Betöltés...
         </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="felhasznalok.js"></script>
     <script src="tema.js"></script>
+    <script src="epuletek.js"></script>
 </body>
 </html>

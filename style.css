@@ -699,3 +699,49 @@ main {
         padding: 5px 8px;
     }
 }
+/* ÉPÜLETEK */
+.epulet-kartya {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+}
+
+.epulet-fejlec {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.epulet-fejlec h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.epulet-fejlec p {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.emeletek-lista {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+}
+
+.emelet-sor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--text);
+}
+
+.emelet-sor:last-child {
+    border-bottom: none;
+}
