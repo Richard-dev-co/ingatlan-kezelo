@@ -745,3 +745,14 @@ main {
 .emelet-sor:last-child {
     border-bottom: none;
 }
+.csoport-fejlec {
+    margin: 24px 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--primary);
+}
+
+.csoport-fejlec h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary);
+}

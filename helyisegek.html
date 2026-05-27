@@ -37,6 +37,9 @@
                 <option value="terem">Terem</option>
                 <option value="raktár">Raktár</option>
             </select>
+            <select id="emelet_id">
+                <option value="">Válassz emeletet (elhagyható)</option>
+            </select>
             <input type="number" id="terulet_m2" placeholder="Terület (m²)">
             <input type="number" id="ferohely" placeholder="Férőhely (fő)">
             <input type="text" id="leiras" placeholder="Leírás">
@@ -46,7 +49,7 @@
                 <option value="karbantartás">Karbantartás</option>
             </select>
             <input type="number" id="ar_havi" placeholder="Havi díj (Ft)">
-            <label style="font-size:13px;color:#6b7280;margin-bottom:4px;display:block">Fájl feltöltése (alaprajz, fotó)</label>
+            <label style="font-size:13px;color:var(--text-secondary);margin-bottom:4px;display:block">Fájl feltöltése (alaprajz, fotó)</label>
             <input type="file" id="fajl" accept=".pdf,.jpg,.jpeg,.png">
             <div class="urlap-gombok">
                 <button onclick="mentese()">Mentés</button>
