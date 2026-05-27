@@ -9,10 +9,15 @@
 <body>
     <header>
         <h1>Ingatlan Kezelő Rendszer</h1>
-        <nav>
+        <button class="hamburger" onclick="menuValt()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <nav id="foMenu">
             <a href="index.html">Dashboard</a>
             <a href="helyisegek.html">Helyiségek</a>
-            <a href="epuletek.html" class="aktiv">Épületek</a>
+            <a href="epuletek.html">Épületek</a>
             <a href="berlok.html">Bérlők</a>
             <a href="szerzodesek.html">Szerződések</a>
             <a href="foglalasok.html">Foglalások</a>
@@ -21,7 +26,7 @@
             <a href="#" onclick="kijelentkezes()">Kilépés</a>
         </nav>
     </header>
-
+    
     <main>
         <div class="oldal-fejlec">
             <h2>Épületek és Emeletek</h2>

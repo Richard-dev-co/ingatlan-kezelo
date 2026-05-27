@@ -22,5 +22,8 @@ function temaAlkalmazasa() {
         if (gomb) gomb.textContent = '☀️'
     }
 }
-
+function menuValt() {
+    const menu = document.getElementById('foMenu')
+    menu.classList.toggle('nyitva')
+}
 temaAlkalmazasa()

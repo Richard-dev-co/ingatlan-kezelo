@@ -136,15 +136,14 @@ async function mentese() {
 
     urlapElrejtes()
 
-    // Email küldés új foglaláskor ha van bérlő
-    if (!szerkesztesId && berlo_id) {
+    // Email küldés új és módosított foglaláskor ha van bérlő
+    if (berlo_id) {
         const { data: berlo } = await client.from('berlok').select('*').eq('id', berlo_id).single()
         const { data: helyiseg } = await client.from('helyisegek').select('*').eq('id', helyiseg_id).single()
-        const ujFoglalas = { cim, kezdet, vege, letszam, statusz, megjegyzes }
-        await emailKuldes(ujFoglalas, berlo, helyiseg)
+        const foglalas = { cim, kezdet, vege, letszam, statusz, megjegyzes }
+        await emailKuldes(foglalas, berlo, helyiseg)
     }
 
-    foglalasokBetoltese()
     foglalasokBetoltese()
 }
 

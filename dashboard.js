@@ -76,6 +76,13 @@ async function kozelgoFoglalasokBetoltese() {
 let aktivisHonap = new Date().getMonth()
 let aktivisEv = new Date().getFullYear()
 
+// Automatikus frissítés 30 másodpercenként
+setInterval(() => {
+    statisztikakBetoltese()
+    kozelgoFoglalasokBetoltese()
+    naptarRajzolas()
+}, 30000)
+
 async function naptarRajzolas() {
     const { data: foglalasok } = await client
         .from('foglalasok')

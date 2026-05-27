@@ -141,7 +141,7 @@ async function helyisegekBetoltese() {
     data.forEach(h => {
         const kulcs = h.emeletek 
             ? `${h.emeletek.epuletek.nev} / ${h.emeletek.nev}` 
-            : 'Nincs emelet megadva'
+            : '📦 Egyéb helyiségek'
         if (!csoportok[kulcs]) csoportok[kulcs] = []
         csoportok[kulcs].push(h)
     })
