@@ -78,6 +78,7 @@ async function torles(id) {
         return
     }
     berlokBetoltese()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 async function berlokBetoltese() {

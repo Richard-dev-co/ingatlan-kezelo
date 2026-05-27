@@ -140,6 +140,7 @@ async function torles(id) {
         return
     }
     szerzodesekBetoltese()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 function szures() {

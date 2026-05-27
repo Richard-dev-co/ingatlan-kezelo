@@ -156,6 +156,7 @@ async function torles(id) {
         return
     }
     foglalasokBetoltese()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 async function pdfGeneralas(id) {

@@ -115,6 +115,7 @@ async function torles(id) {
         return
     }
     helyisegekBetoltese()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 async function helyisegekBetoltese() {
