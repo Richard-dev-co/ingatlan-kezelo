@@ -143,6 +143,22 @@ async function torles(id) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+async function fajlTorles(bucket, utvonal) {
+    if (!confirm('Biztosan törölni szeretnéd ezt a fájlt?')) return
+
+    const { error } = await client.storage
+        .from(bucket)
+        .remove([utvonal])
+
+    if (error) {
+        alert('Hiba történt a törlés során!')
+        console.error(error)
+        return
+    }
+
+    helyisegekBetoltese()
+}
+
 function szures() {
     const kereses = document.getElementById('kereses').value.toLowerCase()
     const statusz = document.getElementById('statusz-szuro').value
