@@ -153,15 +153,22 @@ async function helyisegekBetoltese() {
                 .from('helyisegek')
                 .list(`${h.id}`)
 
-            const fajlLinkek = fajlok && fajlok.length > 0
+         const fajlLinkek = fajlok && fajlok.length > 0
                 ? fajlok.map(f => {
                     const { data: url } = client.storage
                         .from('helyisegek')
                         .getPublicUrl(`${h.id}/${f.name}`)
+                    const isKep = f.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)
+                    if (isKep) {
+                        return `
+                            <a href="${url.publicUrl}" target="_blank">
+                                <img src="${url.publicUrl}" alt="${f.name}" class="helyiseg-kep">
+                            </a>`
+                    }
                     return `<a href="${url.publicUrl}" target="_blank" class="fajl-link">📎 ${f.name}</a>`
                 }).join('')
                 : ''
-
+                
             return `
                 <div class="helyiseg-kartya">
                     <div>
