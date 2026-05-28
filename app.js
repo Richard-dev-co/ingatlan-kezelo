@@ -120,7 +120,9 @@ async function torles(id) {
 
 async function fajlTorles(bucket, utvonal) {
     if (!confirm('Biztosan törölni szeretnéd ezt a fájlt?')) return
-
+    
+    console.log('Törlés:', bucket, utvonal)
+    
     const { error } = await client.storage
         .from(bucket)
         .remove([utvonal])
