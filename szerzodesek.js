@@ -143,11 +143,11 @@ async function torles(id) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-async function fajlTorles(bucket, utvonal) {
+async function fajlTorles(szerzodesId, utvonal) {
     if (!confirm('Biztosan törölni szeretnéd ezt a fájlt?')) return
 
     const { error } = await client.storage
-        .from(bucket)
+        .from('szerzodesek')
         .remove([utvonal])
 
     if (error) {
@@ -156,7 +156,7 @@ async function fajlTorles(bucket, utvonal) {
         return
     }
 
-    helyisegekBetoltese()
+    szerzodesekBetoltese()
 }
 
 function szures() {
@@ -192,7 +192,21 @@ async function kartyakMegjelenites(data) {
                 const { data: url } = await client.storage
                     .from('szerzodesek')
                     .createSignedUrl(`${sz.id}/${f.name}`, 3600)
-                return `<a href="${url.signedUrl}" target="_blank" class="fajl-link">📎 ${f.name}</a>`
+                const isKep = f.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)
+                if (isKep) {
+                    return `
+                        <div class="fajl-kontener">
+                            <a href="${url.signedUrl}" target="_blank">
+                                <img src="${url.signedUrl}" alt="${f.name}" class="helyiseg-kep">
+                            </a>
+                            <button onclick="fajlTorles(${sz.id}, '${sz.id}/${f.name}')" class="fajl-torles-gomb">🗑️</button>
+                        </div>`
+                }
+                return `
+                    <div class="fajl-kontener">
+                        <a href="${url.signedUrl}" target="_blank" class="fajl-link">📎 ${f.name}</a>
+                        <button onclick="fajlTorles(${sz.id}, '${sz.id}/${f.name}')" class="fajl-torles-gomb">🗑️</button>
+                    </div>`
             }))).join('')
             : ''
 
