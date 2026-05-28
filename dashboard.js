@@ -83,6 +83,115 @@ setInterval(() => {
     naptarRajzolas()
 }, 30000)
 
+async function grafikonokBetoltese() {
+    // 1. Helyiségek kihasználtsága - Kördiagram
+    const { data: helyisegek } = await client
+        .from('helyisegek')
+        .select('statusz')
+
+    const szabad = helyisegek?.filter(h => h.statusz === 'szabad').length ?? 0
+    const foglalt = helyisegek?.filter(h => h.statusz === 'foglalt').length ?? 0
+    const karbantartas = helyisegek?.filter(h => h.statusz === 'karbantartás').length ?? 0
+
+    new Chart(document.getElementById('helyisegGrafikon'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Szabad', 'Foglalt', 'Karbantartás'],
+            datasets: [{
+                data: [szabad, foglalt, karbantartas],
+                backgroundColor: ['#10b981', '#ef4444', '#f59e0b'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    })
+
+    // 2. Foglalások száma havonta - Sávdiagram
+    const { data: foglalasok } = await client
+        .from('foglalasok')
+        .select('kezdet')
+
+    const honapok = ['Jan', 'Feb', 'Már', 'Ápr', 'Máj', 'Jún', 'Júl', 'Aug', 'Sze', 'Okt', 'Nov', 'Dec']
+    const foglalasSzamok = new Array(12).fill(0)
+    
+    foglalasok?.forEach(f => {
+        const honap = new Date(f.kezdet).getMonth()
+        foglalasSzamok[honap]++
+    })
+
+    new Chart(document.getElementById('foglalasGrafikon'), {
+        type: 'bar',
+        data: {
+            labels: honapok,
+            datasets: [{
+                label: 'Foglalások száma',
+                data: foglalasSzamok,
+                backgroundColor: '#4c6ef5',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    })
+
+    // 3. Havi bevétel - Vonaldiagram
+    const { data: szerzodesek } = await client
+        .from('szerzodesek')
+        .select('havi_dij, statusz')
+        .eq('statusz', 'aktív')
+
+    const honapiBevertel = new Array(12).fill(0)
+    szerzodesek?.forEach(sz => {
+        for (let i = 0; i < 12; i++) {
+            honapiBevertel[i] += sz.havi_dij ?? 0
+        }
+    })
+
+    new Chart(document.getElementById('bevételGrafikon'), {
+        type: 'line',
+        data: {
+            labels: honapok,
+            datasets: [{
+                label: 'Bevétel (Ft)',
+                data: honapiBevertel,
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    })
+}
+
 async function naptarRajzolas() {
     const { data: foglalasok } = await client
         .from('foglalasok')
@@ -192,25 +301,6 @@ function naptarNapKattintas(nap, honap, ev) {
         })
 }
 
-    const ma = new Date()
-    const elsoNap = new Date(aktivisEv, aktivisHonap, 1).getDay()
-    const napokSzama = new Date(aktivisEv, aktivisHonap + 1, 0).getDate()
-    const honapNev = new Date(aktivisEv, aktivisHonap).toLocaleDateString('hu-HU', { year: 'numeric', month: 'long' })
-
-    const napNevek = ['H', 'K', 'Sze', 'Cs', 'P', 'Szo', 'V']
-    const kezdoNap = elsoNap === 0 ? 6 : elsoNap - 1
-
-    let html = `
-        <div class="naptar-honap">
-            <button onclick="honapValt(-1)">◀</button>
-            <span>${honapNev}</span>
-            <button onclick="honapValt(1)">▶</button>
-        </div>
-        <div class="naptar-grid">
-            ${napNevek.map(n => `<div class="naptar-nap-nev">${n}</div>`).join('')}
-            ${Array(kezdoNap).fill('<div class="naptar-nap ures"></div>').join('')}
-    `
-
 function honapValt(irany) {
     aktivisHonap += irany
     if (aktivisHonap > 11) { aktivisHonap = 0; aktivisEv++ }
@@ -223,3 +313,4 @@ bejelentkezesEllenorzese()
 statisztikakBetoltese()
 kozelgoFoglalasokBetoltese()
 naptarRajzolas()
+grafikonokBetoltese()
