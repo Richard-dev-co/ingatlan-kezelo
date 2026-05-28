@@ -76,11 +76,34 @@
                 <div id="naptar"></div>
             </div>
         </div>
+    <!-- Grafikonok -->
+        <div class="grafikon-grid">
+            <div class="dashboard-panel">
+                <h3>Helyiségek kihasználtsága</h3>
+                <div class="grafikon-kontener">
+                    <canvas id="helyisegGrafikon"></canvas>
+                </div>
+            </div>
+            <div class="dashboard-panel">
+                <h3>Foglalások száma havonta</h3>
+                <div class="grafikon-kontener">
+                    <canvas id="foglalasGrafikon"></canvas>
+                </div>
+            </div>
+            <div class="dashboard-panel">
+                <h3>Havi bevétel (Ft)</h3>
+                <div class="grafikon-kontener">
+                    <canvas id="bevételGrafikon"></canvas>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="dashboard.js"></script>
     <script src="tema.js"></script>
+    <script src="dashboard.js"></script>
+   
 </body>
 </html>
