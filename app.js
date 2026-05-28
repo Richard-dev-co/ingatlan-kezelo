@@ -118,6 +118,22 @@ async function torles(id) {
     window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+async function fajlTorles(bucket, utvonal) {
+    if (!confirm('Biztosan törölni szeretnéd ezt a fájlt?')) return
+
+    const { error } = await client.storage
+        .from(bucket)
+        .remove([utvonal])
+
+    if (error) {
+        alert('Hiba történt a törlés során!')
+        console.error(error)
+        return
+    }
+
+    helyisegekBetoltese()
+}
+
 async function helyisegekBetoltese() {
     const lista = document.getElementById('helyisegek-lista')
 
@@ -153,7 +169,7 @@ async function helyisegekBetoltese() {
                 .from('helyisegek')
                 .list(`${h.id}`)
 
-         const fajlLinkek = fajlok && fajlok.length > 0
+       const fajlLinkek = fajlok && fajlok.length > 0
                 ? fajlok.map(f => {
                     const { data: url } = client.storage
                         .from('helyisegek')
@@ -161,14 +177,21 @@ async function helyisegekBetoltese() {
                     const isKep = f.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)
                     if (isKep) {
                         return `
-                            <a href="${url.publicUrl}" target="_blank">
-                                <img src="${url.publicUrl}" alt="${f.name}" class="helyiseg-kep">
-                            </a>`
+                            <div class="fajl-kontener">
+                                <a href="${url.publicUrl}" target="_blank">
+                                    <img src="${url.publicUrl}" alt="${f.name}" class="helyiseg-kep">
+                                </a>
+                                <button onclick="fajlTorles('helyisegek', '${h.id}/${f.name}')" class="fajl-torles-gomb">🗑️</button>
+                            </div>`
                     }
-                    return `<a href="${url.publicUrl}" target="_blank" class="fajl-link">📎 ${f.name}</a>`
+                    return `
+                        <div class="fajl-kontener">
+                            <a href="${url.publicUrl}" target="_blank" class="fajl-link">📎 ${f.name}</a>
+                            <button onclick="fajlTorles('helyisegek', '${h.id}/${f.name}')" class="fajl-torles-gomb">🗑️</button>
+                        </div>`
                 }).join('')
                 : ''
-                
+
             return `
                 <div class="helyiseg-kartya">
                     <div>
