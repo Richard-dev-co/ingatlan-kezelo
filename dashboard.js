@@ -211,17 +211,6 @@ function naptarNapKattintas(nap, honap, ev) {
             ${Array(kezdoNap).fill('<div class="naptar-nap ures"></div>').join('')}
     `
 
-    for (let i = 1; i <= napokSzama; i++) {
-        const isMa = i === ma.getDate() && aktivisHonap === ma.getMonth() && aktivisEv === ma.getFullYear()
-        const isFoglalt = foglaltNapok.has(i)
-        const osztaly = isMa ? 'mai' : isFoglalt ? 'foglalt' : ''
-        html += `<div class="naptar-nap ${osztaly}">${i}</div>`
-    }
-
-    html += '</div>'
-    document.getElementById('naptar').innerHTML = html
-}
-
 function honapValt(irany) {
     aktivisHonap += irany
     if (aktivisHonap > 11) { aktivisHonap = 0; aktivisEv++ }
